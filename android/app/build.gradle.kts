@@ -8,7 +8,7 @@ plugins {
 android {
     namespace = "com.example.smart_attendance"
     compileSdk = flutter.compileSdkVersion
-    ndkVersion = flutter.ndkVersion
+    // ndkVersion = "27.0.12077973" // Removed to resolve build error on specific machine
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
