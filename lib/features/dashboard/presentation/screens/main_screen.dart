@@ -4,7 +4,7 @@ import 'package:smart_attendance/core/constants/app_colors.dart';
 import 'package:smart_attendance/features/dashboard/presentation/screens/dashboard_screen.dart';
 import 'package:smart_attendance/features/history/presentation/screens/history_screen.dart';
 import 'package:smart_attendance/features/profile/presentation/screens/profile_screen.dart';
-
+import 'package:smart_attendance/features/organizations/presentation/screens/organizations_list_screen.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -18,6 +18,7 @@ class _MainScreenState extends State<MainScreen> {
 
   final List<Widget> _screens = [
     const DashboardScreen(),
+    const OrganizationsListScreen(),
     const HistoryScreen(),
     const ProfileScreen(),
   ];
@@ -65,7 +66,12 @@ class _MainScreenState extends State<MainScreen> {
             BottomNavigationBarItem(
               icon: Icon(PhosphorIconsRegular.house),
               activeIcon: Icon(PhosphorIconsFill.house),
-              label: 'Dashboard',
+              label: 'Home',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(PhosphorIconsRegular.buildings),
+              activeIcon: Icon(PhosphorIconsFill.buildings),
+              label: 'Orgs',
             ),
             BottomNavigationBarItem(
               icon: Icon(PhosphorIconsRegular.clockCounterClockwise),

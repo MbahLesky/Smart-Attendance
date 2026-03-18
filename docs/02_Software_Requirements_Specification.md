@@ -19,7 +19,7 @@ This Software Requirements Specification (SRS) defines the functional and non-fu
 
 The system consists of:
 * **Admin Web Application (React)** – used by administrators to manage organizations, users, sessions, and reports.
-* **Mobile Application (Flutter)** – used by attendees to mark attendance.
+* **Mobile Application (Flutter)** – used by attendees to join organizations and mark attendance.
 * **Backend API** – handles authentication, session validation, attendance processing, and data storage.
 
 This document focuses primarily on the core system features (functional requirements) and the detailed processes involved in each.
@@ -36,14 +36,16 @@ Controls the entire platform.
 ### 2.2. Organization Admin
 Manages attendance within a specific organization.
 * Manage departments or groups.
-* Register attendees.
+* Register attendees or approve membership requests.
 * Create attendance sessions and generate QR codes.
 * Monitor attendance records and generate reports.
 
 ### 2.3. Attendee
 A registered participant who marks attendance using the mobile application.
 * Log in to the mobile application.
+* Search and join organizations/departments.
 * Scan QR codes to mark attendance.
+* Undergo location and network verification.
 * View personal attendance history and receive confirmation.
 
 ## 3. Use Case Identification
@@ -54,7 +56,7 @@ A registered participant who marks attendance using the mobile application.
 | Login | Admin logs into the dashboard |
 | Create Organization | Admin registers a new organization |
 | Manage Departments | Admin creates and manages departments |
-| Register Attendees | Admin adds attendees to the system |
+| Approve Join Request | Admin approves attendees joining the organization |
 | Create Session | Admin creates attendance session |
 | Generate QR Code | System generates QR code for session |
 | Monitor Attendance | Admin views attendance records |
@@ -65,8 +67,10 @@ A registered participant who marks attendance using the mobile application.
 | Use Case | Description |
 | :--- | :--- |
 | Login | Attendee logs into the mobile app |
+| Join Organization | Attendee searches and joins an organization |
 | View Sessions | Attendee sees available sessions |
 | Scan QR Code | Attendee scans QR code to check in |
+| Verify Proximity | System checks Geolocation/Wi-Fi during check-in |
 | Confirm Attendance | System confirms attendance |
 | View History | Attendee views past attendance |
 
@@ -75,12 +79,15 @@ A registered participant who marks attendance using the mobile application.
 ### 4.1. Admin User Stories
 * As an admin, I want to create attendance sessions so that I can track attendance for specific events.
 * As an admin, I want to generate QR codes so that attendees can easily mark attendance.
+* As an admin, I want to approve join requests so that I can control who joins my organization.
 * As an admin, I want to monitor attendance records so that I can see who attended.
 * As an admin, I want to export attendance reports so that I can analyze attendance patterns.
 
 ### 4.2. Attendee User Stories
 * As an attendee, I want to log in to the mobile app so that I can access attendance sessions.
+* As an attendee, I want to join my school/company so that I can see their specific sessions.
 * As an attendee, I want to scan a QR code so that I can mark my attendance quickly.
+* As an attendee, I want my location to be verified so that my attendance record is secure and valid.
 * As an attendee, I want to view my attendance history so that I can track my participation.
 
 ## 5. Functional Requirements (Core Features)
@@ -88,66 +95,50 @@ A registered participant who marks attendance using the mobile application.
 ### 5.1. User Authentication (Priority: M)
 * **Description:** Secure login based on roles.
 * **Process:** Verify credentials, generate JWT/Auth token, grant role-based access.
-* **Required Data:** `email`, `password`.
 
-### 5.2. Organization Management (Priority: M)
-* **Description:** Super Admin creates and manages organizations.
-* **Process:** Validate organization fields, store record, assign org admin.
-* **Required Data:** `name`, `email`, `phone`, `address`.
+### 5.2. Organization & Department Management (Priority: M)
+* **Description:** Admins manage structures; Attendees join structures.
+* **Process:** Validate organization fields, handle join requests from mobile app.
 
-### 5.3. Department or Group Management (Priority: M)
-* **Description:** Manage units within an organization.
-* **Process:** Select org, define department, assign attendees.
-* **Required Data:** `name`, `organization_id`, `description`.
-
-### 5.4. Attendee Registration (Priority: M)
-* **Description:** Register attendees for sessions.
-* **Process:** Enter details, hash password, assign to department.
-* **Required Data:** `name`, `email`, `phone`, `department_id`.
-
-### 5.5. Attendance Session Creation (Priority: M)
+### 5.3. Attendance Session Creation (Priority: M)
 * **Description:** Create sessions for events or classes.
-* **Process:** Define details, generate secure token and QR code.
-* **Required Data:** `title`, `date`, `start_time`, `end_time`, `grace_period`.
+* **Process:** Define details (including location radius and Wi-Fi SSID requirements).
 
-### 5.6. QR Code Attendance Check-in (Priority: M)
-* **Description:** Scan QR to mark attendance.
-* **Process:** Read token, validate session status and user eligibility on backend.
-* **Required Data:** `qr_token`, `user_id`, `timestamp`.
+### 5.4. Smart Attendance Check-in (Priority: M)
+* **Description:** Multi-factor check-in using QR, Geolocation, and Wi-Fi.
+* **Verification Steps:**
+    1. **QR Scan:** Identifies the specific session.
+    2. **Geolocation:** Verifies user is within defined radius (e.g., 50 meters).
+    3. **Wi-Fi Base:** Verifies user is connected to the authorized Wi-Fi SSID.
 
-### 5.7. Attendance Status Processing (Priority: M)
+### 5.5. Attendance Status Processing (Priority: M)
 * **Description:** Automatically determine status.
 * **Logic:**
     * **Present:** `check-in <= start_time + grace_period`
     * **Late:** `check-in > start_time + grace_period`
     * **Absent:** No check-in before session closes.
 
-### 5.8. Manual Attendance Entry (Priority: S)
-* **Description:** Admin manually marks attendance if QR fails.
-* **Process:** Select session/user, update status manually.
+### 5.6. Manual Attendance Entry (Priority: S)
+* **Description:** Admin manually marks attendance if verification fails.
 
-### 5.9. Attendance Reporting (Priority: M)
-* **Description:** View stats and export reports.
-* **Process:** Aggregate data, display charts/tables, export to CSV/PDF.
-
-### 5.10. Attendance History (Priority: S)
-* **Description:** Attendees view past records chronologically.
+### 5.7. Attendance Reporting & History (Priority: M)
+* **Description:** Admins view aggregated reports; Attendees view personal history.
 
 ## 6. Non-Functional Requirements
-* **Performance:** Check-ins processed in seconds.
-* **Security:** Encrypted passwords, JWT authentication, RBAC.
-* **Usability:** Intuitive interface for all actors.
-* **Reliability:** Prevent duplicates, maintain accurate logs.
-* **Scalability:** Support growth in users and organizations.
+* **Performance:** Multi-factor verification processed in under 10 seconds.
+* **Security:** Encrypted passwords, JWT authentication, RBAC, Proximity validation.
+* **Usability:** Streamlined check-in flow with progress feedback.
+* **Reliability:** Prevent duplicates, maintain accurate logs with location data.
 
 ## 7. Requirement Prioritization (MoSCoW)
-* **Must Have:** Auth, Org/User Management, Session Creation, QR Check-in, Basic Reporting.
-* **Should Have:** Automatic late detection, manual editing, history.
-* **Could Have:** GPS/Selfie verification, notifications.
+* **Must Have:** Auth, Org/User Management, Session Creation, QR Check-in, Smart Verification (Geo/Wi-Fi), Basic Reporting.
+* **Should Have:** Automatic late detection, manual editing, history, Join Org workflow.
+* **Could Have:** Selfie verification, push notifications.
 * **Won't Have (MVP):** Biometrics, payroll integration.
 
 ## 8. Acceptance Criteria
-* Admins can successfully manage sessions and users.
-* Attendees can check in via QR code.
+* Admins can successfully manage sessions and structures.
+* Attendees can join organizations and departments.
+* Attendees can check in via QR code only if they pass Geo and Wi-Fi checks.
 * System correctly classifies Present/Late/Absent.
 * Accurate reports are generated.

@@ -33,9 +33,6 @@ server/
 │   │   ├── environment.js
 │   ├── modules/
 │   │   ├── auth/
-│   │   │   ├── auth.controller.js
-│   │   │   ├── auth.service.js
-│   │   │   ├── auth.routes.js
 │   │   ├── organizations/
 │   │   ├── departments/
 │   │   ├── users/
@@ -43,12 +40,7 @@ server/
 │   │   ├── attendance/
 │   │   ├── reports/
 │   ├── middlewares/
-│   │   ├── auth.middleware.js
-│   │   ├── role.middleware.js
-│   │   ├── validation.middleware.js
 │   ├── utils/
-│   │   ├── qrGenerator.js
-│   │   ├── dateUtils.js
 │   ├── app.js
 │   └── server.js
 ```
@@ -58,13 +50,7 @@ Built using React with a feature-based architecture:
 ```text
 src/
 ├── app/
-│   ├── router.jsx
-│   └── providers.jsx
 ├── components/
-│   ├── ui/
-│   ├── forms/
-│   ├── tables/
-│   └── charts/
 ├── features/
 │   ├── auth/
 │   ├── organizations/
@@ -74,16 +60,13 @@ src/
 │   ├── attendance/
 │   └── reports/
 ├── layouts/
-│   ├── AuthLayout.jsx
-│   └── DashboardLayout.jsx
 ├── pages/
 ├── services/
-│   └── apiClient.js
 ```
 
 ## 5. Admin Web Application Pages
 * **Authentication:** Login, Registration, Forgot Password.
-* **Dashboard:** Summary stats (Total attendees, Sessions today, Attendance rate).
+* **Dashboard:** Summary stats.
 * **Organization Management:** List, Create, Edit.
 * **Department Management:** List, Create, Edit, User Assignment.
 * **User Management:** List, Create, Profile, Deactivate.
@@ -92,27 +75,35 @@ src/
 * **Reports:** Daily, Session, Department, Analytics Export.
 
 ## 6. Mobile Application Structure (Flutter)
+The mobile app uses **Riverpod** for state management and follows a feature-first folder structure.
 ```text
 lib/
 ├── core/
+│   ├── routing/
+│   ├── theme/
 │   ├── constants/
-│   └── utils/
+│   └── widgets/
 ├── features/
 │   ├── auth/
 │   ├── dashboard/
-│   ├── attendance/ (Scanner, Result)
+│   ├── attendance/ (Scanner, Result, Verification)
+│   ├── organizations/ (Join Organization, Join Department)
 │   ├── history/
 │   └── profile/
-├── services/
-│   └── api_service.dart
-├── widgets/
-└── main.dart
+├── models/
+├── providers/
+├── main.dart
 ```
 
 ## 7. Mobile App Screens
 * **Auth:** Login, Registration.
 * **Dashboard:** Active and upcoming sessions.
-* **QR Scanner:** Uses device camera to scan and submit attendance.
+* **Join Organization:** Search and join an organization using a code or list.
+* **Join Department:** Select a department within an organization.
+* **QR Scanner:** Uses `mobile_scanner` to scan session QR codes.
+* **Attendance Verification (Upcoming):**
+    * **Geolocation:** Verifies user is within a specific radius of the session location.
+    * **Wi-Fi Base:** Verifies user is connected to a specific Wi-Fi network.
 * **Attendance Result:** Success message, status, and session info.
 * **Attendance History:** Chronological list of records.
 * **Profile:** User info and account settings.
@@ -123,14 +114,15 @@ lib/
 `Login -> Dashboard -> [Organizations, Departments, Users, Sessions, Attendance, Reports, Settings]`
 
 ### 8.2. Mobile Application Navigation
-`Login -> Dashboard -> [Scan QR, Attendance Result, History, Profile]`
+`Login -> Dashboard -> [Join Organization/Dept, Scan QR, Attendance Result, History, Profile]`
 
 ## 9. Feature-to-Module Mapping
 | Feature | Backend Module | Web Module | Mobile Module |
 | :--- | :--- | :--- | :--- |
 | Authentication | Auth | Auth | Auth |
-| Organization | Organizations | Organizations | — |
+| Organization | Organizations | Organizations | Organizations |
 | User Management | Users | Users | — |
 | Sessions | Sessions | Sessions | — |
 | QR Attendance | Attendance | Attendance | Attendance |
+| Geolocation/Wi-Fi | Attendance | — | Attendance |
 | Reports | Reports | Reports | — |

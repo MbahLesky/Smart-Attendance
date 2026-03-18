@@ -74,7 +74,9 @@ The API follows these rules:
 | Endpoint Type | Super Admin | Org Admin | Attendee |
 | :--- | :--- | :--- | :--- |
 | Manage organizations | Yes | No | No |
+| Join organizations | No | No | Yes |
 | Manage departments | Yes | Yes | No |
+| Join departments | No | No | Yes |
 | Manage profiles/users | Yes | Yes | No |
 | Manage sessions | Yes | Yes | No |
 | Submit attendance | No | No | Yes |
@@ -103,13 +105,15 @@ The API follows these rules:
 
 ## 8. Organizations API
 * `POST /organizations`: Create Org (Super Admin).
-* `GET /organizations`: List Orgs (Super Admin).
-* `GET /organizations/:id`: View Org (Super Admin).
+* `GET /organizations`: List Orgs (Super Admin / Attendee search).
+* `GET /organizations/:id`: View Org.
+* `POST /organizations/:id/join`: Request to join an organization (Attendee).
 * `PATCH /organizations/:id`: Update Org (Super Admin).
 
 ## 9. Departments API
 * `POST /departments`: Create Dept (Super Admin / Org Admin).
-* `GET /departments`: List Depts (Super Admin / Org Admin).
+* `GET /departments`: List Depts (Filtering by Org).
+* `POST /departments/:id/join`: Request to join a department (Attendee).
 * `PATCH /departments/:id`: Update Dept (Super Admin / Org Admin).
 * `DELETE /departments/:id`: Delete Dept (Super Admin / Org Admin).
 
@@ -120,7 +124,7 @@ The API follows these rules:
 * `POST /users/import`: Bulk Import Users (CSV).
 
 ## 11. Sessions API
-* `POST /sessions`: Create Session (Start/End time, Grace period).
+* `POST /sessions`: Create Session (Start/End time, Grace period, Geo radius, Wi-Fi SSID).
 * `GET /sessions`: List Sessions (Admins see org sessions; attendees see relevant sessions).
 * `PATCH /sessions/:id/status`: Change Session Status (Draft, Active, Closed, Cancelled).
 * `GET /sessions/:id/qr`: Get Session QR token info.
@@ -135,6 +139,7 @@ The API follows these rules:
  "qr_token": "secure-session-token",
  "latitude": 4.0511,
  "longitude": 9.7679,
+ "wifi_ssid": "Main_Campus_WIFI",
  "device_info": "Android 14 - Samsung A15"
 }
 ```
@@ -155,24 +160,29 @@ The API follows these rules:
 * **Auth:** Valid Bearer token required.
 * **Users:** Unique email, valid role.
 * **Sessions:** `end_time > start_time`, `grace_minutes >= 0`.
-* **Attendance:** QR token match, active session, unique entry per session.
+* **Attendance:** 
+    * QR token match.
+    * Active session.
+    * Unique entry per session.
+    * **Proximity Check:** Coordinates must be within `radius` of session location.
+    * **Network Check:** `wifi_ssid` must match session requirements.
 
 ## 15. Error Handling
 * `200/201`: Success/Created.
 * `400`: Bad Request / Validation error.
 * `401`: Unauthorized.
-* `403`: Forbidden (Role error).
+* `403`: Forbidden (Role error or Proximity/Network verification failed).
 * `404`: Resource not found.
 * `409`: Conflict / Duplicate.
 * `500`: Internal server error.
 
 ## 16. API Module Priority Summary
-* **M (Must):** Auth me, Organizations, Departments, Users, Sessions, QR Check-in.
+* **M (Must):** Auth me, Organizations, Departments, Users, Sessions, QR Check-in, Geo/Wi-Fi Validation.
 * **S (Should):** Manual Entry, History, Reports, Exports.
 * **C (Could):** Bulk Import.
 
 ## 17. Suggested Implementation Order
 1. **Phase 1:** Auth, Organizations, Departments, Users.
 2. **Phase 2:** Sessions, QR generation.
-3. **Phase 3:** Attendance check-in, History.
+3. **Phase 3:** Attendance check-in (including Geo/Wi-Fi logic), History.
 4. **Phase 4:** Reports, Exports.

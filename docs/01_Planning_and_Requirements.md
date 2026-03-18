@@ -36,11 +36,11 @@ To build a smart attendance platform that allows administrators to manage attend
 * Provide secure authentication for admins and attendees.
 * Allow admins to create and manage attendance sessions.
 * Allow admins to manage organizations, departments, and attendees.
-* Allow attendees to mark attendance using mobile devices.
+* Allow attendees to search and join organizations/departments.
+* Allow attendees to mark attendance using mobile devices with smart validation (QR, Geolocation, Wi-Fi).
 * Reduce duplicate, proxy, or fake attendance.
 * Automatically record attendance status such as **Present**, **Late**, **Absent**, or **Excused**.
 * Generate attendance reports and analytics.
-* Support future smart validation features like GPS and selfie verification.
 
 ## 4. Stakeholders
 
@@ -63,7 +63,7 @@ This interface will allow administrators to:
 * Log in to the admin dashboard.
 * Create and manage organizations.
 * Create departments or groups.
-* Register attendees.
+* Register attendees or approve join requests.
 * Create attendance sessions and generate QR Codes.
 * Monitor attendance in real-time and view analytics.
 * Manually enter/edit attendance where necessary.
@@ -71,22 +71,25 @@ This interface will allow administrators to:
 ### 5.2. Mobile Application
 This application will be used by attendees to:
 * Log in to the mobile app.
+* Search and join organizations and departments.
 * View assigned attendance sessions.
 * Scan QR codes to check in.
+* Undergo multi-factor validation (Geolocation, Wi-Fi base) for secure check-in.
 * View personal attendance history.
 * Receive attendance-related notifications.
 
 ### 5.3. Backend Server
-The backend will handle authentication, data processing, attendance validation, and storage.
+The backend will handle authentication, data processing, attendance validation (including proximity and network checks), and storage.
 
 ## 6. System Scope
 
 ### 6.1. In Scope
 * Admin and Attendee authentication/authorization.
 * Organization and Department management.
-* Attendee registration and management.
+* Attendee registration and "Join Organization" workflow.
 * Attendance session creation and QR code generation.
-* QR code-based attendance marking with automatic status classification.
+* QR code-based attendance marking with status classification.
+* **Smart Validation:** Geolocation radius verification and Wi-Fi SSID verification.
 * Manual attendance entry by admins.
 * Attendance history tracking and reporting/analytics.
 * Role-Based Access Control (RBAC).
@@ -106,7 +109,8 @@ The backend will handle authentication, data processing, attendance validation, 
 The system must allow administrators to:
 * Log in securely.
 * Manage Organizations, Departments, and Attendees.
-* Create attendance sessions with specific dates, times, and grace periods.
+* Approve or reject requests from attendees to join departments.
+* Create attendance sessions with specific locations and network requirements.
 * Generate QR codes for sessions.
 * View and manually update attendance records.
 * Export attendance reports.
@@ -114,14 +118,16 @@ The system must allow administrators to:
 ### 7.2. Attendee Mobile Application
 The system must allow attendees to:
 * Log in securely.
+* Search for organizations and select departments to join.
 * View active or upcoming sessions.
-* Scan QR codes to check in and receive confirmation.
+* Scan QR codes to check in.
+* Verify location (GPS) and network (Wi-Fi) during check-in.
 * View personal attendance history and status.
 
 ### 7.3. Backend System
 The backend system must:
 * Validate authentication credentials and manage data entities.
-* Validate sessions before accepting check-ins.
+* Validate sessions and check-in proximity/network requirements.
 * Prevent duplicate entries and automatically classify status (Late, Absent, Present).
 * Provide RESTful APIs for web and mobile clients.
 
@@ -134,7 +140,7 @@ The backend system must:
 ### 8.2. Security
 * Passwords must be securely hashed.
 * Implement strict RBAC and input validation.
-* Server-side validation for all QR code check-ins.
+* Server-side validation for all QR code and location-based check-ins.
 
 ### 8.3. Usability
 * Intuitive UI for both admin dashboard and mobile app.
@@ -151,12 +157,12 @@ The backend system must:
 * Web application built with **React**.
 * Mobile application built with **Flutter**.
 * Follows SDLC methodology.
-* MVP focuses on core attendance flow.
+* Prototype includes mock smart validation.
 
 ## 10. Assumptions
 * Users have smartphones and internet access.
 * Admins use modern web browsers.
-* QR code check-in is the primary method for the first version.
+* GPS and Wi-Fi are available on attendee devices.
 
 ## 11. Feasibility Analysis
 
@@ -171,9 +177,10 @@ Utilizes open-source tools to minimize development costs.
 
 ## 12. Success Criteria
 * Admins successfully manage attendees and sessions.
-* Attendees successfully check in via QR code.
+* Attendees successfully join organizations and departments.
+* Attendees successfully check in via QR code with location/network verification.
 * Duplicate/invalid attempts are blocked.
 * Accurate reports are generated.
 
 ## 13. Conclusion
-The Smart Attendance Tracking System modernize attendance management through a secure digital platform, improving efficiency and accuracy for all stakeholders.
+The Smart Attendance Tracking System modernizes attendance management through a secure digital platform, improving efficiency and accuracy for all stakeholders.
