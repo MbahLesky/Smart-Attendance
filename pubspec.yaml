@@ -1,5 +1,5 @@
-name: smart_attendance
-description: "A Smart Attendance Tracking System Flutter application."
+name: rollog
+description: "Rollog - A Smart Attendance Tracking System application."
 publish_to: 'none'
 version: 1.0.0+1
 
@@ -30,7 +30,25 @@ dev_dependencies:
   build_runner: ^2.4.9
   custom_lint: ^0.6.4
   riverpod_lint: ^2.3.10
+  flutter_launcher_icons: ^0.13.1
+  flutter_native_splash: ^2.4.0
+
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/rollog-icon-on-light.png"
+  min_sdk_android: 21
+  adaptive_icon_background: "#F8FAFC"
+  adaptive_icon_foreground: "assets/rollog-icon-on-light.png"
+
+flutter_native_splash:
+  color: "#F8FAFC"
+  image: "assets/rollog-icon-on-light.png"
+  android: true
+  ios: true
+  fullscreen: true
 
 flutter:
   uses-material-design: true
   assets:
+    - assets/

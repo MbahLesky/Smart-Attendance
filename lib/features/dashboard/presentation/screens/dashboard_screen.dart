@@ -6,6 +6,7 @@ import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:intl/intl.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/routing/app_router.dart';
+import '../../../../core/widgets/app_logo.dart';
 
 class DashboardScreen extends ConsumerWidget {
   const DashboardScreen({super.key});
@@ -31,7 +32,7 @@ class DashboardScreen extends ConsumerWidget {
               _buildActiveSession(context),
               const Gap(32),
               _buildUpcomingSessions(context),
-              const Gap(120), // Extra space to prevent content being hidden by FAB or Nav Bar
+              const Gap(120),
             ],
           ),
         ),
@@ -43,24 +44,30 @@ class DashboardScreen extends ConsumerWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        Row(
           children: [
-            const Text(
-              'Hello, John Doe 👋',
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-                color: AppColors.textPrimary,
-              ),
-            ),
-            const Gap(4),
-            Text(
-              DateFormat('EEEE, d MMMM yyyy').format(DateTime.now()),
-              style: const TextStyle(
-                fontSize: 14,
-                color: AppColors.textSecondary,
-              ),
+            const AppIconLogo(height: 40),
+            const Gap(12),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  'Hello, John Doe 👋',
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: AppColors.textPrimary,
+                  ),
+                ),
+                const Gap(2),
+                Text(
+                  DateFormat('EEEE, d MMM').format(DateTime.now()),
+                  style: const TextStyle(
+                    fontSize: 12,
+                    color: AppColors.textSecondary,
+                  ),
+                ),
+              ],
             ),
           ],
         ),

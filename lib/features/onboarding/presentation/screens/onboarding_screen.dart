@@ -4,6 +4,7 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:gap/gap.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/routing/app_router.dart';
+import '../../../../core/widgets/app_logo.dart';
 
 class OnboardingScreen extends StatefulWidget {
   const OnboardingScreen({super.key});
@@ -48,7 +49,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               });
             },
             itemBuilder: (context, index) {
-              return _OnboardingPage(item: _items[index]);
+              return _OnboardingPage(item: _items[index], isFirst: index == 0);
             },
           ),
           Positioned(
@@ -79,7 +80,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     const Spacer(),
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        minimumSize: Size(120, 56),
+                        minimumSize: const Size(120, 56),
                       ),
                       onPressed: () {
                         if (_isLastPage) {
@@ -118,8 +119,9 @@ class OnboardingItem {
 
 class _OnboardingPage extends StatelessWidget {
   final OnboardingItem item;
+  final bool isFirst;
 
-  const _OnboardingPage({required this.item});
+  const _OnboardingPage({required this.item, this.isFirst = false});
 
   @override
   Widget build(BuildContext context) {
@@ -128,6 +130,19 @@ class _OnboardingPage extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
+          if (isFirst) ...[
+            const AppLogo(height: 60),
+            const Gap(8),
+            const Text(
+              'Smart Attendance Tracker',
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.w600,
+                color: AppColors.textPrimary,
+              ),
+            ),
+            const Gap(48),
+          ],
           Container(
             padding: const EdgeInsets.all(32),
             decoration: BoxDecoration(

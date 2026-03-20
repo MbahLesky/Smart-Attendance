@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
-import 'package:smart_attendance/core/constants/app_colors.dart';
-import 'package:smart_attendance/features/dashboard/presentation/screens/dashboard_screen.dart';
-import 'package:smart_attendance/features/history/presentation/screens/history_screen.dart';
-import 'package:smart_attendance/features/profile/presentation/screens/profile_screen.dart';
-import 'package:smart_attendance/features/organizations/presentation/screens/organizations_list_screen.dart';
+import 'package:rollog/core/constants/app_colors.dart';
+import 'package:rollog/features/dashboard/presentation/screens/dashboard_screen.dart';
+import 'package:rollog/features/history/presentation/screens/history_screen.dart';
+import 'package:rollog/features/organizations/presentation/screens/organizations_list_screen.dart';
+import 'package:rollog/features/profile/presentation/screens/profile_screen.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});

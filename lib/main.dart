@@ -29,12 +29,28 @@ class SmartAttendanceApp extends ConsumerWidget {
     // final themeMode = ref.watch(themeProvider);
     
     return MaterialApp.router(
-      title: 'Smart Attendance',
+      title: 'Rollog',
       debugShowCheckedModeBanner: false,
       // theme: AppTheme.lightTheme,
       // darkTheme: AppTheme.darkTheme,
       // themeMode: themeMode,
       routerConfig: AppRouter.router,
+      builder: (context, child) {
+        if (child == null) return const SizedBox.shrink();
+        
+        // Wrap with a Theme to ensure context has theme data
+        return Builder(
+          builder: (context) {
+            final isDark = Theme.of(context).brightness == Brightness.dark;
+            SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+              statusBarColor: Colors.transparent,
+              statusBarIconBrightness: isDark ? Brightness.light : Brightness.dark,
+              statusBarBrightness: isDark ? Brightness.dark : Brightness.light,
+            ));
+            return child;
+          },
+        );
+      },
     );
   }
 }
