@@ -4,12 +4,20 @@ import 'package:go_router/go_router.dart';
 import 'package:gap/gap.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:intl/intl.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/routing/app_router.dart';
 import '../../../../core/widgets/app_logo.dart';
 
 class DashboardScreen extends ConsumerWidget {
   const DashboardScreen({super.key});
+
+  Future<void> _launchAdminUrl() async {
+    final Uri url = Uri.parse('https://smart-attendance-admin.vercel.app/');
+    if (!await launchUrl(url)) {
+      throw Exception('Could not launch $url');
+    }
+  }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -28,6 +36,8 @@ class DashboardScreen extends ConsumerWidget {
               _buildSummaryCards(),
               const Gap(32),
               _buildJoinSection(context),
+              const Gap(8),
+              _buildCreateSection(context),
               const Gap(32),
               _buildActiveSession(context),
               const Gap(32),
@@ -52,7 +62,7 @@ class DashboardScreen extends ConsumerWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const Text(
-                  'Hello, John Doe 👋',
+                  'Hello, Mbah Lesky 👋',
                   style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
@@ -168,13 +178,13 @@ class DashboardScreen extends ConsumerWidget {
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: AppColors.secondary.withOpacity(0.1),
+        color: AppColors.primary.withOpacity(0.1),
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: AppColors.secondary.withOpacity(0.2)),
+        border: Border.all(color: AppColors.primary.withOpacity(0.2)),
       ),
       child: Row(
         children: [
-          const Icon(PhosphorIconsRegular.buildings, color: AppColors.secondary, size: 32),
+          const Icon(PhosphorIconsRegular.buildings, color: AppColors.primary, size: 32),
           const Gap(16),
           Expanded(
             child: Column(
@@ -195,13 +205,57 @@ class DashboardScreen extends ConsumerWidget {
           ElevatedButton(
             onPressed: () => context.push(AppRouter.joinOrganization),
             style: ElevatedButton.styleFrom(
-              backgroundColor: AppColors.secondary,
+              backgroundColor: AppColors.primary,
               foregroundColor: Colors.white,
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
               minimumSize: const Size(80, 40),
               padding: const EdgeInsets.symmetric(horizontal: 16),
             ),
             child: const Text('Join'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildCreateSection(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: AppColors.secondary.withOpacity(0.1),
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: AppColors.secondary.withOpacity(0.2)),
+      ),
+      child: Row(
+        children: [
+          const Icon(PhosphorIconsRegular.buildingApartment, color: AppColors.secondary, size: 32),
+          const Gap(16),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  'Create an Organization',
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: AppColors.textPrimary),
+                ),
+                const Gap(4),
+                const Text(
+                  'Launch an event, meeting or session and track attendance',
+                  style: TextStyle(color: AppColors.textSecondary, fontSize: 12),
+                ),
+              ],
+            ),
+          ),
+          ElevatedButton(
+            onPressed: _launchAdminUrl,
+            style: ElevatedButton.styleFrom(
+              backgroundColor: AppColors.secondary,
+              foregroundColor: Colors.white,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+              minimumSize: const Size(80, 40),
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+            ),
+            child: const Text('Create'),
           ),
         ],
       ),

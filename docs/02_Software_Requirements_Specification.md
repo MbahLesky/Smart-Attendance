@@ -15,14 +15,12 @@
 ## 1. Introduction
 
 ### 1.1. Purpose of the SRS
-This Software Requirements Specification (SRS) defines the functional and non-functional requirements for the Smart Attendance Tracking System. The document serves as a reference for developers, designers, and stakeholders to understand how the system should behave and what features it must support.
+This Software Requirements Specification (SRS) defines the functional and non-functional requirements for **Rollog**. The document serves as a reference for developers, designers, and stakeholders to understand how the system should behave and what features it must support.
 
 The system consists of:
 * **Admin Web Application (React)** – used by administrators to manage organizations, users, sessions, and reports.
 * **Mobile Application (Flutter)** – used by attendees to join organizations and mark attendance.
 * **Backend API** – handles authentication, session validation, attendance processing, and data storage.
-
-This document focuses primarily on the core system features (functional requirements) and the detailed processes involved in each.
 
 ## 2. System Actors
 
@@ -44,9 +42,8 @@ Manages attendance within a specific organization.
 A registered participant who marks attendance using the mobile application.
 * Log in to the mobile application.
 * Search and join organizations/departments.
-* Scan QR codes to mark attendance.
-* Undergo location and network verification.
-* View personal attendance history and receive confirmation.
+* Mark attendance via multi-factor verification.
+* View personal attendance history.
 
 ## 3. Use Case Identification
 
@@ -54,7 +51,7 @@ A registered participant who marks attendance using the mobile application.
 | Use Case | Description |
 | :--- | :--- |
 | Login | Admin logs into the dashboard |
-| Create Organization | Admin registers a new organization |
+| Create Organization | Admin registers a new organization via the web portal |
 | Manage Departments | Admin creates and manages departments |
 | Approve Join Request | Admin approves attendees joining the organization |
 | Create Session | Admin creates attendance session |
@@ -68,6 +65,7 @@ A registered participant who marks attendance using the mobile application.
 | :--- | :--- |
 | Login | Attendee logs into the mobile app |
 | Join Organization | Attendee searches and joins an organization |
+| Create Organization | Attendee is redirected to the web portal to create a new org |
 | View Sessions | Attendee sees available sessions |
 | Scan QR Code | Attendee scans QR code to check in |
 | Verify Proximity | System checks Geolocation/Wi-Fi during check-in |
@@ -81,14 +79,13 @@ A registered participant who marks attendance using the mobile application.
 * As an admin, I want to generate QR codes so that attendees can easily mark attendance.
 * As an admin, I want to approve join requests so that I can control who joins my organization.
 * As an admin, I want to monitor attendance records so that I can see who attended.
-* As an admin, I want to export attendance reports so that I can analyze attendance patterns.
 
 ### 4.2. Attendee User Stories
 * As an attendee, I want to log in to the mobile app so that I can access attendance sessions.
 * As an attendee, I want to join my school/company so that I can see their specific sessions.
+* As an attendee, I want to be able to create a new organization if I am an administrator.
 * As an attendee, I want to scan a QR code so that I can mark my attendance quickly.
 * As an attendee, I want my location to be verified so that my attendance record is secure and valid.
-* As an attendee, I want to view my attendance history so that I can track my participation.
 
 ## 5. Functional Requirements (Core Features)
 
@@ -97,8 +94,11 @@ A registered participant who marks attendance using the mobile application.
 * **Process:** Verify credentials, generate JWT/Auth token, grant role-based access.
 
 ### 5.2. Organization & Department Management (Priority: M)
-* **Description:** Admins manage structures; Attendees join structures.
-* **Process:** Validate organization fields, handle join requests from mobile app.
+* **Description:** Admins manage structures; Attendees join or initiate creation.
+* **Process:** 
+    * Mobile app provides "Join" and "Create" options.
+    * "Create" redirects to the external React Admin portal.
+    * "Join" allows searching and requesting entry to existing orgs.
 
 ### 5.3. Attendance Session Creation (Priority: M)
 * **Description:** Create sessions for events or classes.
@@ -108,15 +108,11 @@ A registered participant who marks attendance using the mobile application.
 * **Description:** Multi-factor check-in using QR, Geolocation, and Wi-Fi.
 * **Verification Steps:**
     1. **QR Scan:** Identifies the specific session.
-    2. **Geolocation:** Verifies user is within defined radius (e.g., 50 meters).
+    2. **Geolocation:** Verifies user is within defined radius.
     3. **Wi-Fi Base:** Verifies user is connected to the authorized Wi-Fi SSID.
 
 ### 5.5. Attendance Status Processing (Priority: M)
-* **Description:** Automatically determine status.
-* **Logic:**
-    * **Present:** `check-in <= start_time + grace_period`
-    * **Late:** `check-in > start_time + grace_period`
-    * **Absent:** No check-in before session closes.
+* **Description:** Automatically determine status (Present, Late, Absent).
 
 ### 5.6. Manual Attendance Entry (Priority: S)
 * **Description:** Admin manually marks attendance if verification fails.
@@ -128,17 +124,17 @@ A registered participant who marks attendance using the mobile application.
 * **Performance:** Multi-factor verification processed in under 10 seconds.
 * **Security:** Encrypted passwords, JWT authentication, RBAC, Proximity validation.
 * **Usability:** Streamlined check-in flow with progress feedback.
-* **Reliability:** Prevent duplicates, maintain accurate logs with location data.
+* **Reliability:** Prevent duplicates, maintain accurate logs.
 
 ## 7. Requirement Prioritization (MoSCoW)
 * **Must Have:** Auth, Org/User Management, Session Creation, QR Check-in, Smart Verification (Geo/Wi-Fi), Basic Reporting.
-* **Should Have:** Automatic late detection, manual editing, history, Join Org workflow.
+* **Should Have:** Automatic late detection, manual editing, history, Join Org workflow, external Org Creation link.
 * **Could Have:** Selfie verification, push notifications.
 * **Won't Have (MVP):** Biometrics, payroll integration.
 
 ## 8. Acceptance Criteria
 * Admins can successfully manage sessions and structures.
 * Attendees can join organizations and departments.
+* Users can successfully navigate to the admin portal to create organizations.
 * Attendees can check in via QR code only if they pass Geo and Wi-Fi checks.
-* System correctly classifies Present/Late/Absent.
 * Accurate reports are generated.

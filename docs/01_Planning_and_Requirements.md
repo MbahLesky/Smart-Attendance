@@ -20,7 +20,7 @@
 ## 1. Project Overview
 Attendance tracking is an important administrative activity in organizations, schools, institutions, and events. Traditional attendance systems such as paper registers, spreadsheets, or manual roll calls are inefficient, time-consuming, and susceptible to errors or manipulation. These systems often make it difficult to generate accurate reports or monitor attendance patterns.
 
-The **Smart Attendance Tracking System** is designed to address these challenges by providing a digital platform that automates attendance management. The system will consist of two main applications: a web application for administrators and a mobile application for attendees. Administrators will manage organizations, users, attendance sessions, and reports through the web application, while attendees will use the mobile application to mark their attendance using QR code scanning and other validation mechanisms.
+**Rollog** is designed to address these challenges by providing a digital platform that automates attendance management. The system will consist of two main applications: a web application for administrators and a mobile application for attendees. Administrators will manage organizations, users, attendance sessions, and reports through the web application, while attendees will use the mobile application to mark their attendance using QR code scanning and other validation mechanisms.
 
 The system aims to improve efficiency, reduce fraud in attendance recording, and provide accurate real-time attendance analytics.
 
@@ -30,13 +30,13 @@ Traditional attendance systems are often manual, slow, and easy to manipulate. P
 ## 3. Project Objectives
 
 ### 3.1. Main Goal
-To build a smart attendance platform that allows administrators to manage attendance sessions from a web app and allows attendees to mark attendance from a mobile app in a secure and efficient way.
+To build a smart attendance platform (**Rollog**) that allows administrators to manage attendance sessions from a web app and allows attendees to mark attendance from a mobile app in a secure and efficient way.
 
 ### 3.2. Specific Objectives
 * Provide secure authentication for admins and attendees.
 * Allow admins to create and manage attendance sessions.
-* Allow admins to manage organizations, departments, and attendees.
-* Allow attendees to search and join organizations/departments.
+* Allow admins to manage organizations, departments, and attendees via a dedicated web portal.
+* Allow attendees to search and join organizations/departments from the mobile app.
 * Allow attendees to mark attendance using mobile devices with smart validation (QR, Geolocation, Wi-Fi).
 * Reduce duplicate, proxy, or fake attendance.
 * Automatically record attendance status such as **Present**, **Late**, **Absent**, or **Excused**.
@@ -56,7 +56,7 @@ To build a smart attendance platform that allows administrators to manage attend
 * Software Developers and System Maintainers
 
 ## 5. Proposed System Overview
-The Smart Attendance Tracking System will consist of three major components:
+Rollog consists of three major components:
 
 ### 5.1. Admin Web Application
 This interface will allow administrators to:
@@ -72,6 +72,7 @@ This interface will allow administrators to:
 This application will be used by attendees to:
 * Log in to the mobile app.
 * Search and join organizations and departments.
+* Access the admin portal to create new organizations.
 * View assigned attendance sessions.
 * Scan QR codes to check in.
 * Undergo multi-factor validation (Geolocation, Wi-Fi base) for secure check-in.
@@ -87,6 +88,7 @@ The backend will handle authentication, data processing, attendance validation (
 * Admin and Attendee authentication/authorization.
 * Organization and Department management.
 * Attendee registration and "Join Organization" workflow.
+* Integration with the web-based admin portal for organization creation.
 * Attendance session creation and QR code generation.
 * QR code-based attendance marking with status classification.
 * **Smart Validation:** Geolocation radius verification and Wi-Fi SSID verification.
@@ -119,6 +121,7 @@ The system must allow administrators to:
 The system must allow attendees to:
 * Log in securely.
 * Search for organizations and select departments to join.
+* Trigger organization creation via the external admin portal.
 * View active or upcoming sessions.
 * Scan QR codes to check in.
 * Verify location (GPS) and network (Wi-Fi) during check-in.
@@ -183,4 +186,4 @@ Utilizes open-source tools to minimize development costs.
 * Accurate reports are generated.
 
 ## 13. Conclusion
-The Smart Attendance Tracking System modernizes attendance management through a secure digital platform, improving efficiency and accuracy for all stakeholders.
+Rollog modernizes attendance management through a secure digital platform, improving efficiency and accuracy for all stakeholders.

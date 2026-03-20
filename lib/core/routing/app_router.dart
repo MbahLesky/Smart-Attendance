@@ -39,7 +39,7 @@ class AppRouter {
   static const String departmentDetails = '/department-details';
 
   static final router = GoRouter(
-    initialLocation: splash,
+    initialLocation: dashboard,
     routes: [
       GoRoute(
         path: splash,

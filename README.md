@@ -1,8 +1,8 @@
-# Smart Attendance
+# Rollog
 
-**Smart Attendance** is a cross-platform solution designed to automate and secure attendance management. It replaces traditional manual tracking with a digital ecosystem comprising a React-based web dashboard for administrators and a Flutter-based mobile app for attendees. 
+**Rollog** is a cross-platform solution designed to automate and secure attendance management. It replaces traditional manual tracking with a digital ecosystem comprising a React-based web dashboard for administrators and a Flutter-based mobile app for attendees. 
 
-Key features include QR-based check-ins, real-time monitoring, role-based access control (Super Admin, Organization Admin, and Attendee), and automated reporting. Built with a modular architecture using Flutter, React, and Supabase.
+Key features include QR-based check-ins, multi-factor verification (Geolocation & Wi-Fi), real-time monitoring, role-based access control (Super Admin, Organization Admin, and Attendee), and automated reporting. Built with a modular architecture using Flutter, React, and Supabase.
 
 ## Documentation
 Explore the project documentation in the `docs/` directory:
